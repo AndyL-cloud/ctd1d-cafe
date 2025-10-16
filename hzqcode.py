@@ -1,6 +1,8 @@
 import streamlit as st
 
+## dictionaries containing menu items
 coffee = {'Name' : 'Coffee',
+          'Image': 
           'Price' : 3,
           'Type' : ['Mocha', 'Latte', 'Cappuccino']
          }
@@ -15,4 +17,4 @@ cake = {'Name' : 'Cake',
           'Type' : ['Chocolate', 'Vanilla', 'Cheese']
        }
 
-print(coffee[2][1])
+## print(coffee[2][1])
