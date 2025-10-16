@@ -7,7 +7,7 @@ page = 1
 st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
 # ------------- Persist simple navigation ---------- test
 if "page" not in st.session_state:
-    st.session_state.page = 1   # 1 = home, 2 = order
+    st.session_state.page = 1   # 1 = home, 2 = order/cart page
 
 ## hzq code
 ## ----------------------------------------------------------------------------------------------------------------------------------------
@@ -77,8 +77,7 @@ def line_total_with_discounts(item: str, qty: int, band: str, combo_active: bool
 ##---------------------------------------------
 if st.session_state.page == 2:
     st.header("Menu")
-    # Build the order FIRST (so 'order' exists)
-    order = {}   # <- this is the variable your earlier run was missing
+    order = {}   
     for item, price in menu.items():
         qty = st.number_input(
             f"{item} (${price:.2f})",
