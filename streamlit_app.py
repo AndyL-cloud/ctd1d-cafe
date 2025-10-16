@@ -1,5 +1,7 @@
 import streamlit as st
 
+page = 1
+
 ## hzq code
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -104,30 +106,45 @@ if st.button("🧹 Clear cart"):
     st.rerun()
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
-st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
+if page == 1:
+          
+          st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
 
-st.title("☕ CTD1D Café — Team Streamlit App")
+          st.title("☕ CTD1D Café — Team Streamlit App")
 
+          st.write("Welcome! What would you like to order?")
 
-st.write("Welcome! What would you like to order?")
+          col1, col2, col3 = st.columns(3)
 
-col1, col2, col3 = st.columns(3)
+          with col1:
+              st.image(coffee['Image'], use_container_width=True)
+              if st.button("Coffee", use_container_width=True):
+                  st.write("You clicked Button 1!")
+                  page = 2
 
-with col1:
-    st.image(coffee['Image'], use_container_width=True)
-    if st.button("Coffee", use_container_width=True):
-        st.write("You clicked Button 1!")
+          with col2:
+              st.image(frjuice['Image'], use_container_width=True)
+              if st.button("Fruit Juice", use_container_width=True):
+                  st.write("You clicked Button 1!")
+                  page = 2
+                        
+          with col3:
+              st.image(cake['Image'], use_container_width=True)
+              if st.button("Cake", use_container_width=True):
+                  st.write("You clicked Button 1!")
+                  page = 2
+                        
+          st.title("Search demo")
 
-with col2:
-    st.image(frjuice['Image'], use_container_width=True)
-    if st.button("Fruit Juice", use_container_width=True):
-        st.write("You clicked Button 1!")
+          query = st.text_input("Search", placeholder="Type something…").strip().lower()
 
-with col3:
-    st.image(cake['Image'], use_container_width=True)
-    if st.button("Cake", use_container_width=True):
-        st.write("You clicked Button 1!")
+          data = ["Sourdough Loaf", "Croissant", "Muffin", "Iced Latte"]
+          results = [x for x in data if query in x.lower()] if query else data
 
+          st.subheader("Results")
+          for item in results:
+              st.write("•", item)
+          
 ## st.image(coffee['Image'])
 ## st.image(frjuice['Image'])
 ## st.image(cake['Image'])
@@ -136,13 +153,16 @@ with col3:
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
 ##test test
-st.title("Search demo")
+          st.title("Search demo")
 
-query = st.text_input("Search", placeholder="Type something…").strip().lower()
+          query = st.text_input("Search", placeholder="Type something…").strip().lower()
 
-data = ["Sourdough Loaf", "Croissant", "Muffin", "Iced Latte"]
-results = [x for x in data if query in x.lower()] if query else data
+          data = ["Sourdough Loaf", "Croissant", "Muffin", "Iced Latte"]
+          results = [x for x in data if query in x.lower()] if query else data
 
-st.subheader("Results")
-for item in results:
-    st.write("•", item)
+          st.subheader("Results")
+          for item in results:
+              st.write("•", item)
+
+if page == 2:
+          st.title('Welcome to page 2!')
