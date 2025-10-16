@@ -73,17 +73,5 @@ if page == 1:
 
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
-##test test
-          st.title("Search demo")
-
-          query = st.text_input("Search", placeholder="Type something…").strip().lower()
-
-          data = ["Sourdough Loaf", "Croissant", "Muffin", "Iced Latte"]
-          results = [x for x in data if query in x.lower()] if query else data
-
-          st.subheader("Results")
-          for item in results:
-              st.write("•", item)
-
 if page == 2:
           st.title('Welcome to page 2!')
