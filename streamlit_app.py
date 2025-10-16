@@ -1,6 +1,5 @@
 import streamlit as st
 
-'''
 page = 1
 
 
@@ -120,72 +119,3 @@ if page == 1:
 
 if page == 2:
           st.title('Welcome to page 2!')
-'''
-
-menu = {
-    "Mocha": 15.00,
-    "Latte": 17.00,
-    "Cappuccino": 16.50,
-    "Tea": 1.50,
-    "Apple Juice": 2.00,
-    "Lemon Juice": 2.25,
-}
-
-qty1 = 0
-qty2 = 0
-qty3 = 0
-
-# ---- PAGE FUNCTIONS ----
-
-def menu():
-    ## st.title("Welcome to our Cafe! :coffee: ")
-    st.write("What would you like to order?")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        ## st.image(coffee['Image'], use_container_width=True)
-        if st.button("Mocha", use_container_width=True):
-            qty1 += 1
-            st.write("Quantity: ", qty1)
-            
-    with col2:
-        ## st.image(frjuice['Image'], use_container_width=True)
-        if st.button("Latte", use_container_width=True):
-            qty2 += 1
-            st.write("Quantity: ", qty2)
-                        
-    with col3:
-        ## st.image(cake['Image'], use_container_width=True)
-        if st.button("Capuccino", use_container_width=True):
-            qty3 += 1
-            st.write("Quantity: ", qty3)
-
-def cart():
-    st.title("Your cart: ")
-    st.write("Your order goes here")
-
-
-# ---- MAIN APP ----
-
-def main():
-    st.title("Welcome to our Cafe! :coffee: ")
-    
-    # Create sidebar buttons for navigation
-    if st.sidebar.button("MENU"):
-        st.session_state.page = "Menu"
-    if st.sidebar.button("CART"):
-        st.session_state.page = "Cart"
-    
-    # Initialize page state if not set
-    if "page" not in st.session_state:
-        st.session_state.page = "Menu"
-    
-    # Display the selected page
-    if st.session_state.page == "Menu":
-        menu()
-    elif st.session_state.page == "Cart":
-        cart()
-
-if __name__ == "__main__":
-    main()
