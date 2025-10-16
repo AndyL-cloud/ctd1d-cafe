@@ -30,7 +30,7 @@ st.title("☕ CTD1D Café — Team Streamlit App")
 
 st.write("Welcome! What would you like to order?")
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     st.header("Coffee")
@@ -39,6 +39,10 @@ with col1:
 with col2:
     st.header("Fruit Juice")
     st.image(frjuice['Image'], use_container_width=True)
+
+with col3:
+    st.header("Cake")
+    st.image(cake['Image'], use_container_width=True)
 
 ## st.image(coffee['Image'])
 ## st.image(frjuice['Image'])
