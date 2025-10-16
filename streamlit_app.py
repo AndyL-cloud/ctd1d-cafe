@@ -81,21 +81,21 @@ if page == 1:
           col1, col2, col3 = st.columns(3)
 
           with col1:
-              st.image(coffee['Image'], use_container_width=True)
+              ## st.image(coffee['Image'], use_container_width=True)
               if st.button("Coffee", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
                   st.empty()
 
           with col2:
-              st.image(frjuice['Image'], use_container_width=True)
+              ## st.image(frjuice['Image'], use_container_width=True)
               if st.button("Fruit Juice", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
                   st.empty()
                         
           with col3:
-              st.image(cake['Image'], use_container_width=True)
+              ## st.image(cake['Image'], use_container_width=True)
               if st.button("Cake", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
