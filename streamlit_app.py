@@ -2,6 +2,13 @@ import streamlit as st
 
 page = 1
 
+
+# ------------- Page config (at top) ------------- test
+st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
+# ------------- Persist simple navigation ---------- test
+if "page" not in st.session_state:
+    st.session_state.page = 1   # 1 = home, 2 = order
+
 ## hzq code
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -68,7 +75,44 @@ def line_total_with_discounts(item: str, qty: int, band: str, combo_active: bool
     after = round(line - disc, 2)
     return round(line, 2), disc, after
 ##---------------------------------------------
+if st.session_state.page == 2:
+    st.header("Menu")
+    # Build the order FIRST (so 'order' exists)
+    order = {}   # <- this is the variable your earlier run was missing
+    for item, price in menu.items():
+        qty = st.number_input(
+            f"{item} (${price:.2f})",
+            min_value=0, max_value=10, value=0, step=1, key=f"qty_{item}"
+        )
+        if qty:
+            order[item] = qty
 
+    st.divider()
+
+    if order:
+        st.header("🧾 Order Summary (with discounts)")
+        combo = has_combo(order)
+        subtotal = discount_sum = grand_total = 0.0
+
+        for item, qty in order.items():
+            before, d, after = line_total_with_discounts(item, qty, band, combo)
+            subtotal += before
+            discount_sum += d
+            grand_total += after
+            st.write(f"{item} × {qty} — Subtotal ${before:.2f} | Discount -${d:.2f} | Line Total ${after:.2f}")
+
+        st.markdown(
+            f"**Subtotal:** ${subtotal:.2f}  \n"
+            f"**Total Discount:** -${discount_sum:.2f}  \n"
+            f"**Grand Total:** **${grand_total:.2f}**"
+        )
+
+        if st.button("Place Order / PayNow"):
+            st.success("✅ Payment received via PayNow. Reference: PN-CTD1D-0001")
+            st.info("Keep this page open as your receipt. Thank you!")
+
+    else:
+        st.info("Select at least one item to see your order summary.")
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
 if page == 1:
