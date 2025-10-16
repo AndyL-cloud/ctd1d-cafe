@@ -1,5 +1,5 @@
 import streamlit as st
-import hzqcode
+import hzqcode as hzq
 
 st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
 
@@ -9,4 +9,4 @@ st.write("Each teammate can add a page inside the `pages/` folder to build new f
 st.write("MEOW")
 st.write("test")
 
-st.image(coffee['Image'])
+st.image(hzq.coffee['Image'])
