@@ -1,4 +1,3 @@
-'''
 import streamlit as st
 
 page = 1
@@ -245,3 +244,4 @@ else:
             st.success("✅ Order placed! (mock checkout)")
             # optionally clear cart after placing
             # st.session_state.cart = {}
+'''
