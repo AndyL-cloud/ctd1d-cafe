@@ -10,11 +10,13 @@ coffee = {'Name' : 'Coffee',
          }
 
 frjuice = {'Name' : 'Fruit Juice',
+           'Image' : 'https://media.istockphoto.com/id/915657126/photo/orange-juice-glass-jar-shot-on-rustic-wooden-table.jpg?s=612x612&w=0&k=20&c=rlj0FwRDQOAV_j8-MUQntzIj8fZegbMewj22nNXxiYc=', 
           'Price' : 2,
           'Type' : ['Apple', 'Lemon', 'Watermelon']
           }
 
 cake = {'Name' : 'Cake',
+        'Image' : 'https://static.vecteezy.com/system/resources/previews/001/738/638/large_2x/chocolate-cake-slice-free-photo.jpg', 
         'Price' : 6,
         'Type' : ['Chocolate', 'Vanilla', 'Cheese']
        }
@@ -28,7 +30,11 @@ st.write("Welcome to our collaborative Streamlit project!")
 st.write("Each teammate can add a page inside the `pages/` folder to build new features.")
 
 st.image(coffee['Image'])
+st.image(frjuice['Image'])
+st.image(cake['Image'])
 
+
+## ----------------------------------------------------------------------------------------------------------------------------------------
 
 ##test test
 st.title("Search demo")
