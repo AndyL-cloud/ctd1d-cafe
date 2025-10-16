@@ -1,0 +1,6 @@
+import streamlit as st
+
+st.set_page_config(page_title="CTD1D Café", page_icon="☕")
+st.title("☕ CTD1D Café — Team App")
+st.write("Hello team! This is our shared Streamlit app.")
+st.write("Add pages in the `pages/` folder and push to GitHub to see them here.")
