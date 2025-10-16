@@ -21,13 +21,22 @@ def search_products(product):
   combined_letters = ''.join(letters)
 
   #This loop is to find the separated letter list in our dictionary of products. 
-  
-  
+if "cart" not in st.session_state:
+    # store as {item_name: qty}
+    st.session_state.cart = {}
+
+def add_to_cart(name: str, qty: int = 1):
+    st.session_state.cart[name] = st.session_state.cart.get(name, 0) + int(qty)
+
+def remove_from_cart(name: str):
+    st.session_state.cart.pop(name, None)
+
+def cart_subtotal() -> float:
+    return round(sum(menu[item] * qty for item, qty in st.session_state.cart.items()), 2)
   
   
       
 
-def order(category, sub_category, qty):
-  type_of_product = 
+
   
     
