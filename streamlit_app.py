@@ -5,23 +5,15 @@ page = 1
 ## hzq code
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
-coffee = {'Name' : 'Coffee',
-          'Image' : 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?cs=srgb&dl=pexels-chevanon-312418.jpg&fm=jpg',
-          'Price' : 3,
-          'Type' : ['Mocha', 'Latte', 'Cappuccino']
-         }
+menu = {
+    "Mocha": 15.00,
+    "Latte": 17.00,
+    "Cappuccino": 16.50,
+    "Tea": 1.50,
+    "Apple Juice": 2.00,
+    "Lemon Juice": 2.25,
+}
 
-frjuice = {'Name' : 'Fruit Juice',
-           'Image' : 'https://media.istockphoto.com/id/915657126/photo/orange-juice-glass-jar-shot-on-rustic-wooden-table.jpg?s=612x612&w=0&k=20&c=rlj0FwRDQOAV_j8-MUQntzIj8fZegbMewj22nNXxiYc=', 
-          'Price' : 2,
-          'Type' : ['Apple', 'Lemon', 'Watermelon']
-          }
-
-cake = {'Name' : 'Cake',
-        'Image' : 'https://static.vecteezy.com/system/resources/previews/001/738/638/large_2x/chocolate-cake-slice-free-photo.jpg', 
-        'Price' : 6,
-        'Type' : ['Chocolate', 'Vanilla', 'Cheese']
-       }
 ##-----------------------------------------------------------------------------------------------------------------------------------------test
 # ----------------- 3) TIME TOGGLE: 9am → 9pm in 3-hour slots ------------------
 st.subheader("⏰ Choose time of day (shop hours 9am–9pm)")
