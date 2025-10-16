@@ -1,62 +1,52 @@
-#setup and menu-define the food items, price and images
-import streamlit as st
-from datetime import datetime
-coffee = {'Name':'Coffee','Price':3,'Type':['Mocha','Latte','Cappuccino']}
-frjuice = {'Name':'Fruit Juice','Price':2,'Type':['Apple','Lemon','Watermelon']}
-cake = {'Name':'Cake','Price':6,'Type':['Chocolate','Vanilla','Cheese']}
+# ----------------- 3) TIME TOGGLE: 9am → 9pm in 3-hour slots ------------------
+st.subheader("⏰ Choose time of day (shop hours 9am–9pm)")
+SLOTS = ["09:00–11:59", "12:00–14:59", "15:00–17:59", "18:00–20:59"]
+slot = st.radio("Time slot", SLOTS, index=0, horizontal=True)
 
-#cart
-cart=st.session_state.setdefauly('cart',{})
+def slot_to_band(s: str) -> str:
+    """Map slot → pricing band."""
+    idx = SLOTS.index(s)
+    if idx == 0:          # 09:00–11:59
+        return "morning"
+    if idx in (1, 2):     # 12:00–17:59
+        return "afternoon"
+    return "evening"      # 18:00–20:59 (we cap at 9pm)
 
-st.title("☕ CTD1D Café Ordering System")
-cat=st.selectbox("Category",["coffee","juice","cake"])
-item={'coffee':coffee, 'juice':frjuice, 'cake':cake}[cat]
-typ=st.selectbox("Variant", item['Type'])
-qty=st.number_input("Quantity", 1,20,1)
+band = slot_to_band(slot)
+st.caption(
+    f"Active band: **{band}**  • Rules — "
+    "Morning: 20% off Coffee+Cake (combo) • "
+    "Afternoon: 20% off Fruit Juice • "
+    "Evening: 30% off everything"
+)
 
-if st.button("Add to cart"):
-  key=(cat, item['Name'], typ)
-  cart[key]=cart.get(key,0)+qty
-  st.success(f"Added {qty} × {typ} {item['Name']}")
+# ----------------- 4) DISCOUNT ENGINE (no cart needed) ------------------------
+def has_combo(order_dict) -> bool:
+    """True if at least one coffee AND one cake are ordered."""
+    has_coffee = any(CATEGORY.get(i) == "coffee" and q > 0 for i, q in order_dict.items())
+    has_cake   = any(CATEGORY.get(i) == "cake"   and q > 0 for i, q in order_dict.items())
+    return has_coffee and has_cake
 
-# -------- TIME & DISCOUNT CONTROLS --------
-use_sim = st.checkbox("Simulate Time", True)
-hour = st.slider("Hour (0–23)", 0, 23, 9)
-band = "morning" if hour < 12 else "afternoon" if hour < 19 else "night"
-st.info(f"Time Band: **{band}** – discounts vary by time of day!")
+def line_total_with_discounts(item: str, qty: int, band: str, combo_active: bool):
+    """
+    Calculate per-line pricing.
+    Returns (line_before_time, time_discount_amount, line_after_time).
+    """
+    unit = menu[item]
+    # Optional batch/integers example: buy ≥3 of same item → 10% off BEFORE time discount
+    line = unit * qty
+    if qty >= 3:
+        line *= 0.90
 
-# -------- PRICING ENGINE --------
-def has_combo(c):
-    return any(k[0]=="coffee" for k in c) and any(k[0]=="cake" for k in c)
-combo = has_combo(cart)
-pct = {"morning":0.2, "afternoon":0.2, "night":0.3}[band]
+    cat = CATEGORY.get(item, "other")
+    pct = 0.0
+    if band == "evening":
+        pct = 0.30
+    elif band == "afternoon" and cat == "juice":
+        pct = 0.20
+    elif band == "morning" and combo_active and cat in {"coffee", "cake"}:
+        pct = 0.20
 
-rows = []
-subtotal = disc = total = 0
-for (cat,name,var),q in cart.items():
-    base = {'coffee':3,'juice':2,'cake':6}[cat]
-    line = base * q
-    if q >= 3: line *= 0.9  # bulk discount
-    pct_line = 0
-    if band == "night": pct_line = pct
-    elif band == "afternoon" and cat == "juice": pct_line = pct
-    elif band == "morning" and combo and cat in {"coffee","cake"}: pct_line = pct
-    d = line * pct_line
-    after = line - d
-    rows.append((f"{name} – {var}", q, base, line, d, after))
-    subtotal += line; disc += d; total += after
-
-# -------- DISPLAY CART --------
-st.subheader("🧾 Cart Summary")
-if rows:
-    st.table({"Item":[r[0] for r in rows],
-              "Qty":[r[1] for r in rows],
-              "Unit":[r[2] for r in rows],
-              "Subtotal":[r[3] for r in rows],
-              "Discount":[r[4] for r in rows],
-              "Total":[r[5] for r in rows]})
-    st.metric("Subtotal", f"${subtotal:.2f}")
-    st.metric("Discount", f"-${disc:.2f}")
-    st.metric("Grand Total", f"${total:.2f}")
-else:
-    st.info("Cart is empty.")
+    disc = round(line * pct, 2)
+    after = round(line - disc, 2)
+    return round(line, 2), disc, after
