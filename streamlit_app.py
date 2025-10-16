@@ -67,7 +67,35 @@ def line_total_with_discounts(item: str, qty: int, band: str, combo_active: bool
     disc = round(line * pct, 2)
     after = round(line - disc, 2)
     return round(line, 2), disc, after
+##---------------------------------------------
+if order:
+    st.header("🧾 Order Summary (with discounts)")
+    combo = has_combo(order)
+    rows = []
+    subtotal = discount_sum = grand_total = 0.0
 
+    for item, qty in order.items():
+        before, d, after = line_total_with_discounts(item, qty, band, combo)
+        rows.append((f"{item} × {qty}", before, d, after))
+        subtotal += before
+        discount_sum += d
+        grand_total += after
+
+    for line, before, d, after in rows:
+        st.write(f"{line} — Subtotal ${before:.2f} | Discount -${d:.2f} | Line Total ${after:.2f}")
+
+    st.markdown(
+        f"**Subtotal:** ${subtotal:.2f}  \n"
+        f"**Total Discount:** -${discount_sum:.2f}  \n"
+        f"**Grand Total:** **${grand_total:.2f}**"
+    )
+
+    if st.button("Place Order / PayNow"):
+        # Simulate a simple PayNow flow — show a reference and final "receipt"
+        st.success("✅ Payment received via PayNow. Reference: PN-CTD1D-0001")
+        st.info("Keep this page open as your receipt. Thank you!")
+else:
+    st.info("Select at least one item to see your order summary.")
 ## ----------------------------------------------------------------------------------------------------------------------------------------
 
 if page == 1:
