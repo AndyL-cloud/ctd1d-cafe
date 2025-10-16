@@ -82,6 +82,60 @@ else:
     if st.button("Place Order (Mock)"):
         st.success("✅ Order placed successfully! (Mock checkout)")
         st.session_state.cart = {}
+
+
+
+# ---------- MENU (dictionary) ----------
+menu = {
+    "Bread": 2.50,
+    "Croissant": 3.00,
+    "Muffin": 2.25,
+    "Cake": 4.00
+}
+
+# ---------- CART (list) ----------
+# st.session_state remembers what’s in the cart after you click buttons
+if "cart" not in st.session_state:
+    st.session_state.cart = []   # e.g. ["Bread", "Cake", "Cake"]
+
+# ---------- FUNCTION to add an item ----------
+def add_to_cart(item):
+    """Add a single item to the cart list."""
+    st.session_state.cart.append(item)
+    st.success(f"✅ {item} added to cart!")
+
+# ---------- STREAMLIT LAYOUT ----------
+st.title("🥖 Simple Bakery Ordering Web App")
+
+st.subheader("Menu")
+for food, price in menu.items():
+    st.write(f"{food} — ${price:.2f}")
+    # Each button adds that food item to the cart
+    if st.button(f"Add {food}", key=food):
+        add_to_cart(food)
+
+st.divider()
+
+# ---------- CART DISPLAY ----------
+st.subheader("🛒 Your Cart")
+
+if len(st.session_state.cart) == 0:
+    st.info("Your cart is empty. Click on 'Add' to order something!")
+else:
+    total = 0
+    # count each unique item
+    for item in menu:
+        count = st.session_state.cart.count(item)
+        if count > 0:
+            line_total = menu[item] * count
+            st.write(f"{item}: {count} × ${menu[item]:.2f} = ${line_total:.2f}")
+            total += line_total
+
+    st.markdown(f"**Total: ${total:.2f}**")
+
+    if st.button("Clear Cart"):
+        st.session_state.cart = []
+        st.success("🗑️ Cart cleared!")
   
   
       
