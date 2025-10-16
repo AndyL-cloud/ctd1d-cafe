@@ -33,19 +33,16 @@ st.write("Welcome! What would you like to order?")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.header("Coffee")
     st.image(coffee['Image'], use_container_width=True)
     if st.button("Coffee", use_container_width=True):
         st.write("You clicked Button 1!")
 
 with col2:
-    st.header("Fruit Juice")
     st.image(frjuice['Image'], use_container_width=True)
     if st.button("Fruit Juice", use_container_width=True):
         st.write("You clicked Button 1!")
 
 with col3:
-    st.header("Cake")
     st.image(cake['Image'], use_container_width=True)
     if st.button("Cake", use_container_width=True):
         st.write("You clicked Button 1!")
