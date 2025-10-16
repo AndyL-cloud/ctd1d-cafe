@@ -9,4 +9,4 @@ st.write("Each teammate can add a page inside the `pages/` folder to build new f
 st.write("MEOW")
 st.write("test")
 
-st.image(hzq.coffee['Image'])
+st.image('https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?cs=srgb&dl=pexels-chevanon-312418.jpg&fm=jpg')
