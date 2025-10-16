@@ -85,18 +85,21 @@ if page == 1:
               if st.button("Coffee", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
+                  st.empty()
 
           with col2:
               st.image(frjuice['Image'], use_container_width=True)
               if st.button("Fruit Juice", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
+                  st.empty()
                         
           with col3:
               st.image(cake['Image'], use_container_width=True)
               if st.button("Cake", use_container_width=True):
                   st.write("You clicked Button 1!")
                   page = 2
+                  st.empty()
                         
           st.title("Search demo")
 
