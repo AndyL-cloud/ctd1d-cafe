@@ -28,3 +28,16 @@ st.write("Welcome to our collaborative Streamlit project!")
 st.write("Each teammate can add a page inside the `pages/` folder to build new features.")
 
 st.image(coffee['Image'])
+
+
+##test test
+st.title("Search demo")
+
+query = st.text_input("Search", placeholder="Type something…").strip().lower()
+
+data = ["Sourdough Loaf", "Croissant", "Muffin", "Iced Latte"]
+results = [x for x in data if query in x.lower()] if query else data
+
+st.subheader("Results")
+for item in results:
+    st.write("•", item)
