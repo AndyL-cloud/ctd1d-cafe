@@ -2,7 +2,7 @@ import streamlit as st
 
 ## dictionaries containing menu items
 coffee = {'Name' : 'Coffee',
-          'Image': 
+          'Image': 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?cs=srgb&dl=pexels-chevanon-312418.jpg&fm=jpg'
           'Price' : 3,
           'Type' : ['Mocha', 'Latte', 'Cappuccino']
          }
