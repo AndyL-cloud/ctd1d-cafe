@@ -1,40 +1,47 @@
-import streamlit as st
-from utils.pricing import get_time_band
+st.subheader("⏰ Choose time of day")
+SLOTS = [
+    "06:00–08:59",
+    "09:00–11:59", "12:00–14:59", "15:00–17:59",
+    "18:00–20:59", "21:00–23:59"
+]
+slot = st.radio("Time slot", SLOTS, horizontal=True)
 
-st.title("Discounts-Controls")
+def slot_to_band(s: str) -> str:
+    """Map a 3-hour slot to a discount band."""
+    idx = SLOTS.index(s)
+    # 0: 00–02, 1: 03–05, 2: 06–08, 3: 09–11, 4: 12–14, 5: 15–17, 6: 18–20, 7: 21–23
+    if idx in (2, 3):       # 06–11
+        return "morning"
+    if idx in (4, 5):       # 12–17
+        return "afternoon"
+    return "night"          # 18–05 (night covers 18–23 and 00–05)
 
-if "enable_time_rules" not in st.session_state:
-  st.session_state.enable_time_rules=True
-if "enable_combo_rule" not in st.session_state:
-  st.session_state.enable_combo_rule=True
-if "sim_hour" not in st.session_state:
-  st.session_state.sim_hour=9
-if "use_sim" not in st.session_state:
-  st.session_state.use_sim= True
+band = slot_to_band(slot)
+st.caption(f"Active band: **{band}**")
 
-st.checkbox("Enable time-based discounts", value=st.session_state.enable_time_rules,
-            key="enable_time_rules")
-st.checkbox("Enable Coffee+Cake combo(morning)", value=st.session_state.enable_combo_rule,
-            key="enable_combo_rule")
+# ---------- (2) Discount engine ----------
+def has_combo(order_dict) -> bool:
+    has_coffee = any(CATEGORY.get(i) == "coffee" for i, q in order_dict.items() if q > 0)
+    has_cake   = any(CATEGORY.get(i) == "cake"   for i, q in order_dict.items() if q > 0)
+    return has_coffee and has_cake
 
-st.subheader("simulate time (for demo)")
-st.slider("Hour (0-23)",0,23, value=st.session_state.use_sim, key"sim_hour")
+def line_total_with_discounts(item: str, qty: int, band: str, combo_active: bool) -> tuple[float, float, float]:
+    """Return (line_subtotal_before_time_discount, time_discount_amount, final_line_total)."""
+    unit = menu[item]
+    # Optional bulk rule: ≥3 of same item → 10% off BEFORE time-based discount
+    line = unit * qty
+    if qty >= 3:
+        line *= 0.90  # bulk 10%
 
-tb=get_time_band(st.session_state.sim_hour if st.session_state.use_sim else None)
-st.info(f"current time band: **{tb}**)
-st.markdown("""
-- **Morning (<12:00)**: 20% off **coffee & cake** **only if** both are in the cart (combo).  
-- **Afternoon (12:00–18:59)**: 20% off **fruit juice**.  
-- **Night (≥19:00)**: 30% off **everything**.  
-- **Bulk**: Buy ≥3 of the same variant → extra 10% off that line (before time discount).
-""")
+    cat = CATEGORY.get(item, "other")
+    pct = 0.0
+    if band == "night":
+        pct = 0.30
+    elif band == "afternoon" and cat == "juice":
+        pct = 0.20
+    elif band == "morning" and combo_active and cat in {"coffee", "cake"}:
+        pct = 0.20
 
-def has_combo(cart)
-has_coffee=any(k[0]=="coffee" for k in cart)
-has_cake=any(k[0]=="cake" for k in cart)
-return has_coffee and has_cake
-
-discount=o
-if "cart" in st.session_state and has_combo(st.session_state.cart):
-  discount=0.1
-  
+    d = round(line * pct, 2)
+    after = round(line - d, 2)
+    return round(line, 2), d, after
