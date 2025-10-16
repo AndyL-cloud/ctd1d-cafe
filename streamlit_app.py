@@ -26,12 +26,23 @@ cake = {'Name' : 'Cake',
 st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
 
 st.title("☕ CTD1D Café — Team Streamlit App")
-st.write("Welcome to our collaborative Streamlit project!")
-st.write("Each teammate can add a page inside the `pages/` folder to build new features.")
 
-st.image(coffee['Image'])
-st.image(frjuice['Image'])
-st.image(cake['Image'])
+
+st.write("Welcome! What would you like to order?")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.header("Coffee")
+    st.image(coffee['Image'], use_column_width=True)
+
+with col2:
+    st.header("Fruit Juice")
+    st.image(frjuice['Image'], use_column_width=True)
+
+## st.image(coffee['Image'])
+## st.image(frjuice['Image'])
+## st.image(cake['Image'])
 
 
 ## ----------------------------------------------------------------------------------------------------------------------------------------
