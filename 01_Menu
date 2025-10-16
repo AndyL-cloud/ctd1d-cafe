@@ -1,0 +1,3 @@
+import streamlit as st
+st.title("Menu 🍰")
+st.write("We’ll list items and let users add quantities here.")
