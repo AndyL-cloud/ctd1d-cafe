@@ -1,5 +1,5 @@
 import streamlit as st
-import hzqcode
+import hzqcode.py
 
 st.set_page_config(page_title="CTD1D Café", page_icon="☕", layout="centered")
 
