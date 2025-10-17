@@ -1,36 +1,3 @@
-import streamlit as st
-
-# ========== 0) APP TITLE ==========
-st.title("☕️ CTD1D Kopitiam — Simple Order + Time Discounts")
-
-# ========== 1) MENU (EDIT THIS ONLY when your items/prices change) ==========
-# Key = item name, Value = price
-MENU = {
-    "Mocha": 3.50,
-    "Latte": 3.80,
-    "Cappuccino": 3.60,
-    "Apple Juice": 2.20,
-    "Lemon Juice": 2.40,
-    "Chocolate Cake": 3.00,
-    "Cheese Cake": 3.20,
-}
-# What category each item belongs to (used by the discount rules)
-CATEGORY = {
-    "Mocha": "coffee", "Latte": "coffee", "Cappuccino": "coffee",
-    "Apple Juice": "juice", "Lemon Juice": "juice",
-    "Chocolate Cake": "cake", "Cheese Cake": "cake",
-}
-
-# ========== 2) QUANTITY INPUTS (no cart; test.py style) ==========
-st.header("Menu")
-order = {}  # will hold only items with qty > 0
-for item, price in MENU.items():
-    qty = st.number_input(f"{item}  (${price:.2f})", 0, 50, 0, 1, key=f"qty_{item}")
-    if qty > 0:
-        order[item] = qty
-
-st.divider()
-
 # ========== 3) TIME TOGGLE (9am → 9pm in 3-hour slots) ==========
 st.subheader("⏰ Choose time of day (shop hours 9am–9pm)")
 SLOTS = ["09:00–11:59", "12:00–14:59", "15:00–17:59", "18:00–20:59"]
@@ -89,28 +56,3 @@ def line_total(item: str, qty: int, band: str, combo: bool):
     time_disc = round(line * pct, 2)
     after = round(line - time_disc, 2)
     return round(line, 2), time_disc, after
-
-# ========== 5) RECEIPT ==========
-if order:
-    st.header("🧾 Receipt")
-    combo = has_combo(order)
-    sub_before = disc_sum = total = 0.0
-
-    # print lines (keep it readable for beginners)
-    for item, qty in order.items():
-        before, d, after = line_total(item, qty, band, combo)
-        sub_before += before
-        disc_sum   += d
-        total      += after
-        st.write(f"{item} × {qty} — Subtotal ${before:.2f} | Discount -${d:.2f} | Line Total ${after:.2f}")
-
-    st.markdown(
-        f"**Subtotal (before time):** ${sub_before:.2f}  \n"
-        f"**Time Discounts:** -${disc_sum:.2f}  \n"
-        f"**Grand Total:** **${total:.2f}**"
-    )
-
-    if band == "morning" and combo:
-        st.caption("☑️ Morning combo active: both Coffee & Cake in order → 20% off those lines.")
-else:
-    st.info("Select at least one item above to see your receipt.")
